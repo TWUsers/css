@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Clavier wolof</title>
+
+	
+
+	<!-- jQuery & jQuery UI + theme (required) -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+
+	<!-- keyboard widget css & script (required) -->
+	<link href="css/keyboard.css" rel="stylesheet">
+	<script src="js/jquery.keyboard.js"></script>
+
+	<!-- preloaded keyboard layout -->
+	<script src="js/keyboard-layouts-microsoft.js" charset="utf-8" ></script>
+
+	<script>
+	$(function(){
+
+		var t,
+			o = '',
+			layouts = [];
+
+		// Change display language, if the definitions are available
+		showKb = function(layout){
+			var kb = $('#multi').getkeyboard();
+			kb.options.layout = layout;
+			// true flag causes a keyboard refresh
+			kb.reveal(true);
+		};
+
+		$.each(jQuery.keyboard.layouts, function(i, l){
+			if (l.name) {
+				layouts.push([i,l.name]);
+			}
+		});
+		// sort select options by language name, not
+		layouts.sort( function( a, b ) {
+			return a[1] > b[1] ? 1 : a[1] < b[1] ? -1 : 0;
+		});
+		$.each(layouts, function(i, l){
+			o += '<option value="' + l[0] + '">' + l[1] + '</option>';
+		});
+
+		$('#multi').keyboard({
+			layout: 'qwerty',
+			stayOpen: true
+		})
+		// activate the typing extension
+		.addTyping({
+			showTyping: true,
+			delay: 0
+		})
+		.previewKeyset();
+
+		$('#lang')
+			.html(o)
+			.change(function(){
+				var kb = $('#multi'),
+					$this = $(this),
+					$opt = $this.find('option:selected'),
+					layout = $this.val();
+				$('h2').text( $opt.text() );
+				showKb( layout );
+			}).trigger('change');
+
+	});
+	</script>
+	<style>
+	.rtl {
+		text-align: right;
+	}
+	</style>
+</head>
+<body>
+
+<div id="page-wrap">
+	
+
+	<h1>Clavier wolof</h1>
+	
+
+	<div class="block2" >
+		<select id="lang" style="display: none;"></select>
+		<br/><br/><br/>
+		<input id="multi" type="text" />
+	</div>
+
+	<br class="clear" />
+
+	
+
+</div>
+
+</body>
+</html>
